@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import heroImage from "../images/Group 6.png";
+import floatImageOne from "../images/chat icon.png";
+import floatImageTwo from "../images/material-symbols_star.png";
 
 export default function Hero() {
   const [displayedText, setDisplayedText] = useState("");
@@ -24,10 +26,10 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="flex flex-col lg:flex-row items-center justify-between px-8 lg:px-16 py-16 lg:py-24 max-w-[1400px] mx-auto">
-      {/* Left Content - 3/4 width */}
-      <div className="lg:w-[670px]">
-        <h1 className="text-[60px] leading-[-0.04] font-[Helvetica-Regular] font-semibold">
+    <section className="flex flex-col lg:flex-row items-center justify-between px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-24 max-w-[1400px] mx-auto">
+      {/* Left Content */}
+      <div className="w-full lg:max-w-[670px] lg:text-left">
+        <h1 className="text-3xl sm:text-4xl lg:text-[60px] font-[Helvetica-Regular] font-semibold leading-tight">
           Introducing{" "}
           <span className="text-[#18B1FF]">
             {displayedText}
@@ -36,44 +38,45 @@ export default function Hero() {
           Chat - Instant, Secure, Smarter Messaging
         </h1>
 
-        <div className="lg:w-[638px]">
-          <p className="mt-[20px] text-gray-600 text-[25px] leading-[1.2] max-w-3xl font-[Helvetica-Regular]">
-            Real-time conversations, media sharing, and smart features to keep
-            communication smooth and intuitive.
-          </p>
-        </div>
+        <p className="mt-5 text-gray-600 text-lg sm:text-xl lg:text-[25px] leading-snug font-[Helvetica-Regular] max-w-2xl mx-auto lg:mx-0">
+          Real-time conversations, media sharing, and smart features to keep
+          communication smooth and intuitive.
+        </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 mt-[50px] w-[545px]">
-          <button className="w-full bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] font-[Helvetica-Regular] text-lg transition-colors duration-200">
+        <div className="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto max-w-[545px] mx-auto lg:mx-0">
+          <button className="flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] font-[Helvetica-Regular] text-lg transition-colors duration-200">
             Download
           </button>
-          <button className="w-full border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-4 rounded-[60px] font-[Helvetica-Regular] text-lg transition-all duration-200">
+          <button className="flex-1 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-4 rounded-[60px] font-[Helvetica-Regular] text-lg transition-all duration-200">
             Get Started
           </button>
         </div>
       </div>
 
-      {/* Right Content - 1/4 width */}
-      <div className="lg:w-1/4 mt-12 lg:mt-0 relative">
+      {/* Right Content */}
+      <div className="w-full lg:w-1/3 mt-12 lg:mt-0 flex justify-center relative">
         <div className="relative">
-          {/* Main hero image/person */}
-          <div className="bg-[#18B1FF] pt-[-200px] rounded-tl-[100px] rounded-tr-lg rounded-br-lg rounded-bl-lg  shadow-2xl inline-block">
+          {/* Main hero image container */}
+          <div className="bg-[#18B1FF] pb-10 sm:pb-12 pl-16 sm:pl-24 rounded-tl-[120px] sm:rounded-tl-[160px] rounded-tr-[40px] rounded-br-[40px] rounded-bl-[30px] shadow-2xl inline-block w-full max-w-[400px] sm:max-w-[490px] overflow-hidden">
             <Image
               src={heroImage}
               alt="Person using secure messaging"
               width={300}
               height={700}
-              className="rounded-2xl w-full"
+              className="rounded-2xl w-full object-cover transform -translate-y-8 sm:-translate-y-12 -translate-x-6 sm:-translate-x-8"
               priority
             />
           </div>
 
           {/* Floating UI elements */}
-          <div className="absolute -top-4 -right-4 bg-blue-500 text-white p-4 rounded-2xl shadow-lg animate-bounce z-20">
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-            </svg>
+          <div className="absolute top-0 right-0 z-20">
+            <Image
+              src={floatImageTwo}
+              alt="Floating decoration"
+              width={40}
+              height={24}
+              className="object-contain"
+            />
           </div>
 
           <div className="absolute -bottom-6 -left-6 bg-green-500 text-white p-3 rounded-xl shadow-lg animate-pulse z-20">
@@ -86,12 +89,15 @@ export default function Hero() {
             </svg>
           </div>
 
-          <div className="absolute top-1/2 -left-8 bg-yellow-400 text-white p-3 rounded-full shadow-lg animate-ping z-20">
-            <span className="text-sm font-bold">💬</span>
+          <div className="absolute -top-4 sm:-top-2 -left-16 sm:-left-24 z-10">
+            <Image
+              src={floatImageOne}
+              alt="Floating decoration"
+              width={60}
+              height={60}
+              className="object-contain sm:w-[80px] sm:h-[60px]"
+            />
           </div>
-
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent rounded-3xl -m-8 z-0"></div>
         </div>
       </div>
     </section>
