@@ -10,6 +10,20 @@
   src: url(../fonts/Helvetica\ Regular.otf);
 }
 
+@font-face {
+  font-family: Inter-Regular;
+  src: url(../fonts/Inter_18pt-Regular.ttf);
+}
+
+@font-face {
+  font-family: Inter-SemiBold;
+  src: url(../fonts/Inter_18pt-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: Inter-Medium;
+  src: url(../fonts/Inter_18pt-Medium.ttf);
+}
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

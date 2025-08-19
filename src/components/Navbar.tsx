@@ -22,7 +22,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center justify-end flex-1">
+        <div className="hidden lg:flex items-center justify-end flex-1 font-[Inter-Regular]">
           <div className="flex items-center space-x-6 xl:space-x-8 2xl:space-x-12">
             <a
               href="#"

@@ -28,8 +28,8 @@ export default function Hero() {
   return (
     <section className="flex flex-col lg:flex-row items-center justify-between px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-24 max-w-[1400px] mx-auto">
       {/* Left Content */}
-      <div className="w-full lg:max-w-[670px] lg:text-left">
-        <h1 className="text-3xl sm:text-4xl lg:text-[60px] font-[Helvetica-Regular] font-semibold leading-tight">
+      <div className="w-full lg:max-w-[670px] lg:text-left font-[Inter-Regular]">
+        <h1 className="text-3xl sm:text-4xl lg:text-[60px] leading-tight font-[Inter-Semibold]">
           Introducing{" "}
           <span className="text-[#18B1FF]">
             {displayedText}
@@ -38,26 +38,26 @@ export default function Hero() {
           Chat - Instant, Secure, Smarter Messaging
         </h1>
 
-        <p className="mt-5 text-gray-600 text-lg sm:text-xl lg:text-[25px] leading-snug font-[Helvetica-Regular] max-w-2xl mx-auto lg:mx-0">
+        <p className="mt-5 text-gray-600 text-lg sm:text-xl lg:text-[25px] leading-snug max-w-2xl mx-auto lg:mx-0">
           Real-time conversations, media sharing, and smart features to keep
           communication smooth and intuitive.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto max-w-[545px] mx-auto lg:mx-0">
-          <button className="flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] font-[Helvetica-Regular] text-lg transition-colors duration-200">
+        <div className="flex flex-row gap-4 mt-10 w-full sm:w-auto max-w-[545px] mx-auto lg:mx-0">
+          <button className="flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] text-lg transition-colors duration-200">
             Download
           </button>
-          <button className="flex-1 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-4 rounded-[60px] font-[Helvetica-Regular] text-lg transition-all duration-200">
+          <button className="flex-1 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-4 rounded-[60px] text-lg transition-all duration-200">
             Get Started
           </button>
         </div>
       </div>
 
       {/* Right Content */}
-      <div className="w-full lg:w-1/3 mt-12 lg:mt-0 flex justify-center relative">
+      <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative mt-10 lg:mt-0">
         <div className="relative">
           {/* Main hero image container */}
-          <div className="bg-[#18B1FF] pb-10 sm:pb-12 pl-16 sm:pl-24 rounded-tl-[120px] sm:rounded-tl-[160px] rounded-tr-[40px] rounded-br-[40px] rounded-bl-[30px] shadow-2xl inline-block w-full max-w-[400px] sm:max-w-[490px] overflow-hidden">
+          <div className="-pb-[30px] bg-[#18B1FF] rounded-tl-[120px] sm:rounded-tl-[160px] rounded-tr-[40px] rounded-br-[40px] rounded-bl-[30px] shadow-2xl inline-block max-w-[400px] sm:max-w-[490px] h-[450px] lg:h-[470px]">
             <Image
               src={heroImage}
               alt="Person using secure messaging"
@@ -69,7 +69,7 @@ export default function Hero() {
           </div>
 
           {/* Floating UI elements */}
-          <div className="absolute top-0 right-0 z-20">
+          {/* <div className="absolute top-0 right-0 z-20">
             <Image
               src={floatImageTwo}
               alt="Floating decoration"
@@ -97,7 +97,7 @@ export default function Hero() {
               height={60}
               className="object-contain sm:w-[80px] sm:h-[60px]"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
