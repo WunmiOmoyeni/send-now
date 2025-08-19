@@ -49,7 +49,7 @@ export default function FeaturesSection() {
             }, 100);
           }
         },
-        { threshold: 0.2, rootMargin: "0px 0px -100px 0px" }
+        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
       );
 
       observer.observe(ref);
@@ -111,32 +111,30 @@ export default function FeaturesSection() {
               >
                 {/* Image */}
                 <div
-                  className={`flex-1 flex justify-center transition-all duration-[2000ms] ease-out relative ${
+                  className={`flex-1 flex justify-center transition-all duration-[2000ms] ease-out relative w-full ${
                     isVisible
                       ? isEven
-                        ? "lg:order-1 opacity-100"
-                        : "lg:order-2 opacity-100"
+                        ? "lg:order-1 opacity-100 translate-x-0"
+                        : "lg:order-2 opacity-100 translate-x-0"
                       : isEven
-                      ? "lg:order-2 lg:translate-x-full opacity-0"
-                      : "lg:order-1 lg:-translate-x-full opacity-0"
+                      ? "lg:order-2 lg:translate-x-full opacity-0 translate-y-4"
+                      : "lg:order-1 lg:-translate-x-full opacity-0 translate-y-4"
                   }`}
                   style={{
                     transitionDelay: isVisible ? "0ms" : "0ms",
                     zIndex: isVisible ? 2 : 1,
-                    visibility:
-                      isVisible || visibleFeatures.size > 0
-                        ? "visible"
-                        : "hidden",
                   }}
                 >
-                  <div className="relative w-full max-w-[525px] h-[280px] sm:h-[350px] md:h-[400px] lg:h-[465px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <div className="relative w-full max-w-[525px] aspect-[525/400] sm:aspect-[525/430] lg:aspect-[525/465] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-gray-100">
                     <Image
                       src={feature.image}
                       alt={feature.title}
                       fill
                       className="object-cover object-center"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 525px"
+                      sizes="(max-width: 640px) 95vw, (max-width: 1024px) 80vw, 525px"
                       priority={idx < 2}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                     />
                   </div>
                 </div>
@@ -146,19 +144,15 @@ export default function FeaturesSection() {
                   className={`w-full lg:w-1/2 flex-1 text-center lg:text-left transition-all duration-[2000ms] ease-out relative ${
                     isVisible
                       ? isEven
-                        ? "lg:order-2 opacity-100"
-                        : "lg:order-1 opacity-100"
+                        ? "lg:order-2 opacity-100 translate-x-0"
+                        : "lg:order-1 opacity-100 translate-x-0"
                       : isEven
-                      ? "lg:order-1 lg:-translate-x-full opacity-0"
-                      : "lg:order-2 lg:translate-x-full opacity-0"
+                      ? "lg:order-1 lg:-translate-x-full opacity-0 translate-y-4"
+                      : "lg:order-2 lg:translate-x-full opacity-0 translate-y-4"
                   }`}
                   style={{
                     transitionDelay: isVisible ? "600ms" : "0ms",
                     zIndex: isVisible ? 2 : 1,
-                    visibility:
-                      isVisible || visibleFeatures.size > 0
-                        ? "visible"
-                        : "hidden",
                   }}
                 >
                   <div className="w-full max-w-[376px] mx-auto lg:mx-0 flex flex-col justify-center space-y-4">
