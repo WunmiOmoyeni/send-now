@@ -47,7 +47,7 @@ export default function Faq() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-[Inter-Medium]">

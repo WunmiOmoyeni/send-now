@@ -5,6 +5,7 @@ import Image from "next/image";
 import heroImage from "../images/Group 6.png";
 import floatImageOne from "../images/chat icon.png";
 import floatImageTwo from "../images/material-symbols_star.png";
+import Link from "next/link";
 
 export default function Hero() {
   const [displayedText, setDisplayedText] = useState("");
@@ -50,9 +51,11 @@ export default function Hero() {
           <button className="flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] text-lg transition-colors duration-200">
             Download
           </button>
-          <button className="flex-1 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-4 rounded-[60px] text-lg transition-all duration-200">
-            Get Started
-          </button>
+          <Link href="/auth/send-otp">
+            <button className="flex-1 border-4 border-[#18b1ff] hover:bg-[#18b1ff] hover:text-white text-gray-700 px-8 py-4 rounded-[60px] text-lg transition-all duration-200">
+              Get Started
+            </button>
+          </Link>
         </div>
       </div>
 

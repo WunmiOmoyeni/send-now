@@ -43,7 +43,7 @@ export default function Navbar() {
               Contact
             </a>
             <a
-              href="#"
+              href="#faq"
               className="text-lg xl:text-xl 2xl:text-[25px] font-medium hover:font-semibold transition-all duration-200 whitespace-nowrap"
             >
               FAQ
@@ -62,31 +62,31 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="lg:hidden fixed inset-0 bg-white flex flex-col justify-center items-center space-y-8 text-center z-40">
+          <div className="lg:hidden fixed inset-0 bg-white flex flex-col justify-center items-center space-y-6 text-center z-40">
             <a
               href="#"
-              className="text-[25px] font-medium hover:font-semibold transition-all duration-200"
+              className="border-[0.5px] border-[rgba(24,177,255,0.23)] w-full py-4 text-[25px] mx-auto font-medium hover:font-semibold transition-all duration-200"
               onClick={() => setMenuOpen(false)}
             >
               Home
             </a>
             <a
               href="#"
-              className="text-[25px] font-medium hover:font-semibold transition-all duration-200"
+              className="border-[0.5px] border-[rgba(24,177,255,0.23)] w-full py-4 text-[25px] font-medium hover:font-semibold transition-all duration-200"
               onClick={() => setMenuOpen(false)}
             >
               About
             </a>
             <a
               href="#"
-              className="text-[25px] font-medium hover:font-semibold transition-all duration-200"
+              className="border-[0.5px] border-[rgba(24,177,255,0.23)] w-full py-4 text-[25px] font-medium hover:font-semibold transition-all duration-200"
               onClick={() => setMenuOpen(false)}
             >
               Contact
             </a>
             <a
-              href="#"
-              className="text-[25px] font-medium hover:font-semibold transition-all duration-200"
+              href="#faq"
+              className="border-[0.5px] border-[rgba(24,177,255,0.23)] w-full py-4 text-[25px] font-medium hover:font-semibold transition-all duration-200"
               onClick={() => setMenuOpen(false)}
             >
               FAQ
