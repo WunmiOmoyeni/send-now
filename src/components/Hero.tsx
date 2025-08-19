@@ -60,13 +60,13 @@ export default function Hero() {
       <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative mt-10 lg:mt-0">
         <div className="relative">
           {/* Main hero image container */}
-          <div className="-pb-[30px] bg-[#18B1FF] rounded-tl-[120px] sm:rounded-tl-[160px] rounded-tr-[40px] rounded-br-[40px] rounded-bl-[30px] shadow-2xl inline-block max-w-[400px] sm:max-w-[490px] h-[450px] lg:h-[470px]">
+          <div className="bg-[#18B1FF] rounded-tl-[120px] rounded-tr-[40px] rounded-br-[40px] rounded-bl-[30px] shadow-2xl inline-block max-w-[400px] sm:max-w-[490px] h-[460px]">
             <Image
               src={heroImage}
               alt="Person using secure messaging"
               width={300}
               height={700}
-              className="rounded-2xl w-full object-cover transform -translate-y-8 sm:-translate-y-12 -translate-x-6 sm:-translate-x-8"
+              className="rounded-2xl w-full h-[500px] object-cover transform -translate-y-10 -translate-x-6"
               priority
             />
           </div>

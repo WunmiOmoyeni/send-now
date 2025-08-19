@@ -9,10 +9,10 @@ export default function FeaturesExtra() {
   return (
     <div>
       {/* Tested, Verified, Ready */}
-      <section className="py-16">
-        <div className="max-w-[1500px] mx-auto px-6 lg:px-8 flex flex-col lg:flex-row items-center lg:items-start lg:space-x-10">
+      <section className="py-16 px-8 sm:px-12 lg:px-16">
+        <div className="max-w-[1500px] mx-auto flex flex-col lg:flex-row items-center lg:items-start lg:space-x-10">
           {/* Left side */}
-          <div className="flex-1 text-center lg:text-left">
+          <div className="flex-1 text-center lg:text-left px-4 sm:px-6 lg:px-0">
             <h2 className="mb-8 font-[Inter-Medium] text-3xl sm:text-4xl md:text-5xl lg:text-[65px] leading-tight">
               Tested. Verified. Ready.
             </h2>
@@ -42,12 +42,12 @@ export default function FeaturesExtra() {
           </div>
 
           {/* Right side */}
-          <div className="mt-12 lg:mt-0 flex justify-center flex-1 w-full">
+          <div className="mt-12 lg:mt-0 flex justify-center flex-1 w-full px-8 py-6 sm:px-6 lg:px-0">
             <div className="relative w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-none">
               <Image
                 src={testedImage}
                 alt="Tested & Verified"
-                className="rounded-lg w-full h-auto lg:w-[890px] lg:h-[665px] "
+                className="rounded-lg w-full h-auto lg:w-[890px] lg:h-[665px]"
                 priority
               />
             </div>
