@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+
 import imgRealTime from "../images/Rectangle 13.png";
 import imgEditDelete from "../images/Frame 1171276349.png";
 import imgTools from "../images/Frame 1171276352.png";
@@ -33,7 +34,7 @@ const features = [
 ];
 
 export default function FeaturesSection() {
-  const [visibleFeatures, setVisibleFeatures] = useState(new Set());
+  const [visibleFeatures, setVisibleFeatures] = useState(new Set<number>());
   const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -43,7 +44,6 @@ export default function FeaturesSection() {
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            // Add delay before starting animation to hide initial positioning
             setTimeout(() => {
               setVisibleFeatures((prev) => new Set(prev).add(index));
             }, 100);
@@ -56,122 +56,125 @@ export default function FeaturesSection() {
       return observer;
     });
 
-    return () => {
-      observers.forEach((observer) => observer?.disconnect());
-    };
+    return () => observers.forEach((observer) => observer?.disconnect());
   }, []);
 
   return (
-    <section className="px-4 sm:px-8 lg:px-16 py-16 max-w-[1200px] lg:mx-auto overflow-hidden bg-white mx-[20px] rounded-[30px]">
-      {/* Heading */}
-      <div className="text-center mb-16 font-[Inter-Regular] px-4">
-        <h2 className="text-[28px] sm:text-[40px] lg:text-[70px] font-semibold text-[#171717] leading-tight">
-          Packed with Powerful <br />
-          <span className="text-[28px] sm:text-[40px] lg:text-[70px] font-semibold text-[#18B1FF]">
-            Features
-          </span>
-        </h2>
-      </div>
+    <section 
+      className="px-4 sm:px-8 lg:px-16 py-16 max-w-[1200px] lg:mx-auto overflow-hidden mx-[20px] rounded-[30px] relative"
+      style={{
+        background: `
+          linear-gradient(135deg, transparent 0%, transparent 60%, rgba(255, 255, 255, 0.9) 100%),
+          linear-gradient(to bottom right, rgba(219, 234, 254, 0.8) 0%, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 1) 100%)
+        `
+      }}
+    >
+      {/* Gradient overlay for top-left fade */}
+      <div 
+        className="absolute inset-0 pointer-events-none rounded-[30px]"
+        style={{
+          background: `
+            radial-gradient(ellipse 800px 600px at top left, 
+              rgba(219, 234, 254, 0.3) 0%, 
+              rgba(219, 234, 254, 0.1) 30%, 
+              transparent 60%
+            )
+          `
+        }}
+      />
+      
+      {/* Content wrapper */}
+      <div className="relative z-10">
+        {/* Heading */}
+        <div className="text-center mb-16 font-[Inter-Regular] px-4">
+          <h2 className="text-[28px] sm:text-[40px] lg:text-[70px] font-semibold text-[#171717] leading-tight">
+            Packed with Powerful <br />
+            <span className="text-[28px] sm:text-[40px] lg:text-[70px] font-semibold text-[#18B1FF]">
+              Features
+            </span>
+          </h2>
+        </div>
 
-      {/* Features List - Crossover Animation Layout */}
-      <div className="space-y-20">
-        {features.map((feature, idx) => {
-          const isVisible = visibleFeatures.has(idx);
-          const isEven = idx % 2 === 0;
+        {/* Features List */}
+        <div className="space-y-20">
+          {features.map((feature, idx) => {
+            const isVisible = visibleFeatures.has(idx);
+            const isEven = idx % 2 === 0;
 
-          return (
-            <div
-              key={idx}
-              ref={(el) => {
-                featureRefs.current[idx] = el;
-              }}
-              className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 min-h-[320px] relative"
-            >
-              {/* Image Container */}
+            return (
               <div
-                className={`flex-1 w-full max-w-md lg:max-w-none transition-all duration-[2500ms] ease-out relative ${
-                  isVisible
-                    ? isEven
-                      ? "lg:order-1 opacity-100" // Final position for even items
-                      : "lg:order-2 opacity-100" // Final position for odd items
-                    : isEven
-                    ? "lg:order-2 lg:translate-x-full opacity-0" // Start from right for even items
-                    : "lg:order-1 lg:-translate-x-full opacity-0" // Start from left for odd items
-                }`}
-                style={{
-                  transitionDelay: isVisible ? "0ms" : "0ms",
-                  zIndex: isVisible ? 2 : 1,
-                  visibility:
-                    isVisible || visibleFeatures.size > 0
-                      ? "visible"
-                      : "hidden",
+                key={idx}
+                ref={(el) => {
+                  featureRefs.current[idx] = el;
                 }}
+                className="flex flex-col-reverse lg:flex-row items-center gap-8 lg:gap-12 min-h-[320px] relative"
               >
-                <div className="relative w-full h-64 lg:h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <Image
-                    src={feature.image}
-                    alt={feature.title}
-                    fill
-                    className="object-cover"
-                  />
+                {/* Image */}
+                <div
+                  className={`flex-1 flex justify-center transition-all duration-[2000ms] ease-out relative ${
+                    isVisible
+                      ? isEven
+                        ? "lg:order-1 opacity-100"
+                        : "lg:order-2 opacity-100"
+                      : isEven
+                      ? "lg:order-2 lg:translate-x-full opacity-0"
+                      : "lg:order-1 lg:-translate-x-full opacity-0"
+                  }`}
+                  style={{
+                    transitionDelay: isVisible ? "0ms" : "0ms",
+                    zIndex: isVisible ? 2 : 1,
+                    visibility:
+                      isVisible || visibleFeatures.size > 0
+                        ? "visible"
+                        : "hidden",
+                  }}
+                >
+                  <div className="relative w-full max-w-[525px] h-[280px] sm:h-[350px] md:h-[400px] lg:h-[465px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <Image
+                      src={feature.image}
+                      alt={feature.title}
+                      fill
+                      className="object-cover object-center"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 525px"
+                      priority={idx < 2}
+                    />
+                  </div>
+                </div>
+
+                {/* Text */}
+                <div
+                  className={`w-full lg:w-1/2 flex-1 text-center lg:text-left transition-all duration-[2000ms] ease-out relative ${
+                    isVisible
+                      ? isEven
+                        ? "lg:order-2 opacity-100"
+                        : "lg:order-1 opacity-100"
+                      : isEven
+                      ? "lg:order-1 lg:-translate-x-full opacity-0"
+                      : "lg:order-2 lg:translate-x-full opacity-0"
+                  }`}
+                  style={{
+                    transitionDelay: isVisible ? "600ms" : "0ms",
+                    zIndex: isVisible ? 2 : 1,
+                    visibility:
+                      isVisible || visibleFeatures.size > 0
+                        ? "visible"
+                        : "hidden",
+                  }}
+                >
+                  <div className="w-full max-w-[376px] mx-auto lg:mx-0 flex flex-col justify-center space-y-4">
+                    <h3 className="text-[22px] sm:text-[28px] lg:text-[40px] font-[Inter-Medium] text-gray-800 leading-snug">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-
-              {/* Text Content */}
-              <div
-                className={`flex-1 text-center lg:text-left space-y-4 transition-all duration-[2500ms] ease-out relative ${
-                  isVisible
-                    ? isEven
-                      ? "lg:order-2 opacity-100" // Final position for even items
-                      : "lg:order-1 opacity-100" // Final position for odd items
-                    : isEven
-                    ? "lg:order-1 lg:-translate-x-full opacity-0" // Start from left for even items
-                    : "lg:order-2 lg:translate-x-full opacity-0" // Start from right for odd items
-                }`}
-                style={{
-                  transitionDelay: isVisible ? "600ms" : "0ms",
-                  zIndex: isVisible ? 2 : 1,
-                  visibility:
-                    isVisible || visibleFeatures.size > 0
-                      ? "visible"
-                      : "hidden",
-                }}
-              >
-                <h3 className="text- lg:text-[70px] font-[Inter-Medium] font-bold text-gray-800">
-                  {feature.title}
-                </h3>
-                <p className="text-lg text-gray-600 leading-relaxed max-w-md mx-auto lg:mx-0">
-                  {feature.description}
-                </p>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-
-      <style jsx>{`
-        @keyframes slideInFromLeft {
-          from {
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        @keyframes slideInFromRight {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-      `}</style>
     </section>
   );
 }

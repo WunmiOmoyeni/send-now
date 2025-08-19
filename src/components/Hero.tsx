@@ -31,9 +31,12 @@ export default function Hero() {
       <div className="w-full lg:max-w-[670px] lg:text-left font-[Inter-Regular]">
         <h1 className="text-3xl sm:text-4xl lg:text-[60px] leading-tight font-[Inter-Semibold]">
           Introducing{" "}
-          <span className="text-[#18B1FF]">
-            {displayedText}
-            <span className="animate-pulse">|</span>
+          <span className="text-[#18B1FF] relative inline-block">
+            <span className="invisible">{targetText}</span>
+            <span className="absolute inset-0 text-[#18B1FF]">
+              {displayedText}
+              <span className="animate-pulse">|</span>
+            </span>
           </span>{" "}
           Chat - Instant, Secure, Smarter Messaging
         </h1>

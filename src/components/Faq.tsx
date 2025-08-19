@@ -23,6 +23,21 @@ export default function Faq() {
       answer:
         "Yes, depending on your plan. Premium users can send significantly larger files than free users.",
     },
+    {
+      question: "Can I send large files?",
+      answer:
+        "Yes, depending on your plan. Premium users can send significantly larger files than free users.",
+    },
+    {
+      question: "Can I send large files?",
+      answer:
+        "Yes, depending on your plan. Premium users can send significantly larger files than free users.",
+    },
+    {
+      question: "Can I send large files?",
+      answer:
+        "Yes, depending on your plan. Premium users can send significantly larger files than free users.",
+    },
   ];
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -35,18 +50,18 @@ export default function Faq() {
     <section className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-[Inter-Medium]">
           General <span className="text-[#18B1FF]">FAQs</span>
         </h1>
-        <p className="mt-4 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto font-[Helvetica-Regular]">
+        <p className="mt-4 text-base sm:text-lg lg:text-xl max-w-xl  font-[Inter-Regular]">
           Everything you need to know about SendNow and how it works. Can’t find
           an answer?{" "}
-          <span className="text-[#18B1FF]">Send a Chat to our team</span>
+          <span className="text-[#18B1FF] underline">Send a Chat to our team</span>
         </p>
       </div>
 
       {/* FAQ Items */}
-      <div className="space-y-4 mb-24 w-full max-w-4xl">
+      <div className="space-y-4 mb-24 w-full max-w-4xl font-[Inter-Regular]">
         {faqs.map((faq, index) => (
           <div
             key={index}
