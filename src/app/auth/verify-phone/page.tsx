@@ -4,8 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import logo from "../../../images/logo.svg"
 import lockImg from "../../../images/1.png";
+import { useRouter } from "next/navigation";
 
 export default function PhoneAuth() {
+  const router = useRouter();
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
@@ -53,6 +55,12 @@ export default function PhoneAuth() {
           data.message ||
             "OTP sent successfully, check your messages for verification"
         );
+
+        //saves phone number in session storage
+        sessionStorage.setItem("phone_number", formattedPhone);
+
+        //redirect to otp verification page
+        router.push('/auth/verify-otp')
       } else {
         // Non-2xx (400, 401, 500, etc.)
         setMessage(data.error || data.message || "Something went wrong.");
