@@ -47,12 +47,12 @@ export default function Hero() {
           communication smooth and intuitive.
         </p>
 
-        <div className="flex flex-row gap-4 mt-10 w-full sm:w-auto max-w-[545px] mx-auto lg:mx-0">
-          <button className="flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] text-lg transition-colors duration-200">
+        <div className="flex flex-row gap-4 mt-10 w-full sm:w-auto max-w-[350px] mx-auto lg:mx-0 items-center justify-center">
+          <button className="w-[300px] flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] text-lg transition-colors duration-200">
             Download
           </button>
-          <Link href="/auth/send-otp">
-            <button className="flex-1 border-4 border-[#18b1ff] hover:bg-[#18b1ff] hover:text-white text-gray-700 px-8 py-4 rounded-[60px] text-lg transition-all duration-200">
+          <Link href="/auth/verify-phone">
+            <button className=" border-4 border-[#18b1ff] hover:bg-[#18b1ff] hover:text-white text-gray-700 px-8 py-4 rounded-[60px] text-lg transition-all duration-200">
               Get Started
             </button>
           </Link>
