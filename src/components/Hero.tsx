@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import heroImage from "../images/Group 6.png";
-import floatImageOne from "../images/chat icon.png";
-import floatImageTwo from "../images/material-symbols_star.png";
+// import floatImageOne from "../images/chat icon.png";
+// import floatImageTwo from "../images/material-symbols_star.png";
 import Link from "next/link";
 
 export default function Hero() {

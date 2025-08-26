@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import logo from "../../../images/logo-white.png"; 
+import Image from "next/image"; 
 import illustration from "../../../images/illustration.png"; // replace with your image
 
 export default function VerifyOtp() {

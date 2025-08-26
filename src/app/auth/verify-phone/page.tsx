@@ -107,7 +107,7 @@ return (
               Number
             </h2>
             <p className="text-gray-600 mb-8 text-lg">
-              We'll send you an OTP to verify your number
+              {`We'll send you an OTP to verify your number`}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
