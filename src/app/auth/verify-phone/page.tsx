@@ -11,6 +11,7 @@ export default function PhoneAuth() {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function getCookie(name: string) {
     const value = `; ${document.cookie}`;
@@ -41,7 +42,7 @@ export default function PhoneAuth() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
             "X-CSRFToken": csrfToken || "",
           },
           body: JSON.stringify({ phone_number: formattedPhone }),
@@ -72,65 +73,111 @@ export default function PhoneAuth() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden flex flex-col bg-gradient-to-br from-blue-50 to-white px-6 py-8">
-      {/* Logo */}
-      <div className="mb-8 flex justify-center lg:justify-start">
-        <Image src={logo} alt="SendNow Logo" className="w-[215px] h-[90px]" />
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 flex items-center justify-center">
-        <div className="max-w-6xl w-full flex flex-col-reverse lg:flex-row items-center gap-16 lg:gap-20">
-          {/* Illustration */}
-          <div className="flex justify-center lg:flex-1">
-            <Image
-              src={lockImg}
-              alt="Secure Login"
-              width={500}
-              height={400}
-              className="object-contain max-w-full h-auto"
-              priority
-            />
+    <div className="h-screen w-screen overflow-hidden flex bg-gradient-to-br from-blue-50 via-blue-25 to-white relative">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-auto w-full">
+        {/* Left side - Logo and Illustration */}
+        <div className="lg:flex-1 flex flex-col items-center justify-center p-8 lg:p-12">
+          {/* Logo */}
+          <div className="absolute top-8 left-8">
+            <div className="flex items-center">
+              <Image src={logo} alt="logo"></Image>
+            </div>
           </div>
 
-          {/* Form */}
-          <div className="lg:flex-1 w-full max-w-md">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Enter Your Phone Number
-            </h2>
-            <p className="text-gray-600 mb-8 text-lg">
-              {`We'll send you an OTP to verify your number`}
-            </p>
+          {/* Security Illustration */}
+          <div className="relative mt-16 lg:mt-0">
+            <Image src={lockImg} alt="lockImg"></Image>
+          </div>
+        </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <input
-                type="tel"
-                placeholder="e.g. 08123456789"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl shadow-sm 
-                           focus:outline-none focus:border-[#18B1FF] text-lg"
-                required
-                maxLength={11}
-              />
+        {/* Right side - Form */}
+        <div className="lg:flex-1 flex items-center justify-center p-8 lg:p-12">
+          <div className="w-full max-w-md">
+            <div className="mb-8">
+              <h1 className="text-4xl lg:text-5xl font-[Inter-Medium] text-gray-900 mb-4 leading-tight">
+                Enter Your Phone Number
+              </h1>
+              <p className="text-gray-600 text-lg font-[Inter-Regular]">
+                We'll send you an OTP to verify your number
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {/* Country code and phone input */}
+              <div className="flex">
+                <div className="flex items-center bg-white border-2 border-gray-200 rounded-xl px-4 py-4 shadow-sm">
+                  <span className="text-lg font-medium text-gray-700">
+                    +234
+                  </span>
+                </div>
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="flex-1 px-4 py-4 border-2 border-gray-200 rounded-xl shadow-sm 
+                             focus:outline-none focus:border-blue-500 text-lg bg-white
+                             transition-colors duration-200"
+                  maxLength={11}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmit(e);
+                    }
+                  }}
+                />
+              </div>
 
               <button
-                type="submit"
-                className="w-full bg-[#18B1FF] hover:bg-[#1299E6] text-white py-4 rounded-xl font-semibold text-lg transition-all duration-200 shadow-md"
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 
+             text-white py-4 rounded-xl font-semibold text-lg 
+             transition-all duration-200 shadow-lg hover:shadow-xl
+             flex items-center justify-center space-x-2 relative"
               >
-                Send OTP
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291
+             A7.962 7.962 0 014 12H0c0 3.042 
+             1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span className="ml-2">Sending...</span>
+                  </>
+                ) : (
+                  <span>Send OTP</span>
+                )}
               </button>
-            </form>
+            </div>
 
             {/* Feedback message */}
             {message && (
-              <p
-                className={`mt-4 text-center text-sm font-medium ${
-                  isError ? "text-red-500" : "text-green-600"
+              <div
+                className={`mt-4 p-3 rounded-lg text-center text-sm font-medium ${
+                  isError
+                    ? "bg-red-50 text-red-700 border border-red-200"
+                    : "bg-green-50 text-green-700 border border-green-200"
                 }`}
               >
                 {message}
-              </p>
+              </div>
             )}
           </div>
         </div>
