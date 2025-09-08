@@ -11,26 +11,16 @@ export default function VerifyOtp() {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState("");
-  const [resendTimer, setResendTimer] = useState(30);
-  const [canResend, setCanResend] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
 
-  //Timer effect for resend functionality
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (resendTimer > 0 && !canResend) {
-      interval = setInterval(() => {
-        setResendTimer((prev) => {
-          if (prev <= 1) {
-            setCanResend(true);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+    const phone = sessionStorage.getItem("phone_number");
+
+    if (!phone) {
+      router.replace("/auth/verify-phone");
     }
-    return () => clearInterval(interval);
-  }, [resendTimer, canResend]);
+  }, [router]);
 
   function getCookie(name: string) {
     const value = `; ${document.cookie}`;
@@ -49,7 +39,7 @@ export default function VerifyOtp() {
 
     try {
       const csrfToken = getCookie("csrftoken");
-      const response = await fetch(
+      const verifyResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/auth/verify-otp`,
         {
           method: "POST",
@@ -65,15 +55,52 @@ export default function VerifyOtp() {
         }
       );
 
-      if (!response.ok) {
+      if (!verifyResponse.ok) {
         throw new Error("Invalid OTP. Please try again.");
       }
 
-      const data = await response.json();
+      const verifyData = await verifyResponse.json();
 
-      //Save access + refresh token to session storage
-      sessionStorage.setItem("access_token", data.access);
-      sessionStorage.setItem("refresh_token", data.refresh);
+      if (!verifyData.tokens) {
+        throw new Error("No tokens received. Try again.");
+      }
+   
+      const refreshToken = verifyData.tokens.refresh_token;
+      const accessToken = verifyData.tokens.access_token;
+
+      if (!refreshToken) {
+        throw new Error("No refresh token received. Please try again");
+      }
+
+      //Immediately call refresh-token APi
+      const refreshResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/auth/refresh-token`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            "X-CSRFtoken": csrfToken || "",
+          },
+          body: JSON.stringify({
+            refresh_token: refreshToken,
+          }),
+        }
+      );
+
+      if (!refreshResponse.ok) {
+        throw new Error("Failed to fetch access token. Please try again.");
+      }
+
+      const refreshData = await refreshResponse.json();
+      console.log(refreshData)
+
+      //Save tokens
+      sessionStorage.setItem("access_token", refreshData.access_token);
+      sessionStorage.setItem(
+        "refresh_token",
+        refreshData.refresh_token || refreshToken
+      );
 
       router.push("/chat-page");
     } catch (error) {
@@ -84,9 +111,10 @@ export default function VerifyOtp() {
   };
 
   const handleResendOtp = async () => {
-    if (!canResend || resendLoading) return;
+    if (resendLoading) return;
 
     setResendLoading(true);
+    setSuccessMessage("");
     setError("");
 
     try {
@@ -101,24 +129,22 @@ export default function VerifyOtp() {
             "X-CSRFToken": csrfToken || "",
           },
           body: JSON.stringify({
-            phone_number,
+            phone_number: phone_number,
           }),
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to resend OTP. Please try again.");
+        throw new Error(`Error: ${response.status}`);
       }
 
-      // Reset timer and disable resend button
-      setResendTimer(30);
-      setCanResend(false);
+      const data = await response.json();
+      setSuccessMessage("Code sent again");
       setCode(Array(6).fill("")); // Clear existing code
-
     } catch (error) {
-      setError (error instanceof Error ? error.message : "Failed to resend OTP");
+      setError(error instanceof Error ? error.message : "Failed to resend OTP");
     } finally {
-      setResendLoading (false);
+      setResendLoading(false);
     }
   };
 
@@ -177,17 +203,17 @@ export default function VerifyOtp() {
           </p>
           <p className="text-gray-500 mb-6">
             Didn&apos;t get it?{" "}
-            <button 
-            onClick={handleResendOtp}
-            disabled={!canResend || resendLoading}
-            className={`font-medium underline ${
-                canResend && !resendLoading
-                  ? "text-blue-500 hover:text-blue-600 cursor-pointer"
-                  : "text-gray-400 cursor-not-allowed"
-              }`}>
-             {resendLoading ? "Sending..." : "Resend Code"}
+            <button
+              onClick={handleResendOtp}
+              className={
+                "font-medium underline text-blue-500 hover:text-blue-600 cursor-pointer"
+              }
+            >
+              {resendLoading ? "Sending..." : "Resend Code"}
             </button>{" "}
-            {!canResend && resendTimer > 0 && `in ${resendTimer}s`}
+            {successMessage && (
+              <p className="mt-2 text-sm text-green-500">{successMessage}</p>
+            )}
           </p>
 
           <form onSubmit={handleVerifyOtp} className="space-y-6">

@@ -1,79 +1,66 @@
-interface TokenResponse {
-  access: string;
-  refresh: string;
-}
+import axios from "axios";
 
-export class AuthService {
-  private static baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  headers: {
+    accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
 
-  // Get CSRF token from cookies
-  private static getCookie(name: string): string | undefined {
-    if (typeof window === "undefined") return undefined;
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()!.split(";").shift();
-  }
-
-  // Get tokens from session storage
-  static getTokens() {
-    if (typeof window === "undefined")
-      return { accessToken: null, refreshToken: null };
-    return {
-      accessToken: sessionStorage.getItem("access_token"),
-      refreshToken: sessionStorage.getItem("refresh_token"),
-    };
-  }
-
-  // Save tokens to session storage
-  static saveTokens(access: string, refresh: string) {
-    if (typeof window === "undefined") return;
-    sessionStorage.setItem("access_token", access);
-    sessionStorage.setItem("refresh_token", refresh);
-  }
-
-  // Clear tokens from session storage
-  static clearTokens() {
-    if (typeof window === "undefined") return;
-    sessionStorage.removeItem("access_token");
-    sessionStorage.removeItem("refresh_token");
-  }
-
-  static async refreshToken(): Promise<TokenResponse | null> {
-    const { refreshToken } = this.getTokens();
-
-    if (!refreshToken) {
-      throw new Error("No refresh token available");
+//Request interceptor + attach access token to every request
+api.interceptors.request.use(
+  (config) => {
+    const accessToken = sessionStorage.getItem("access_token");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
-    try {
-      const csrfToken = this.getCookie("csrfToken");
-      const response = await fetch(`${this.baseUrl}/users/auth/refresh-token`, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken || "",
-        },
-        body: JSON.stringify({
-          refresh_token: refreshToken,
-        }),
-      });
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-      if (!response.ok) {
-        throw new Error("Failed to refresh token");
+//Response interceptor + refresh token on 401 errors
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    //If request failed with 401 and we haven't retried yet
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const refreshToken = sessionStorage.getItem("refresh_token");
+      if (!refreshToken) {
+        //No refresh token stored -> force logout
+        console.error("No refresh token found. Please log in again");
+        return Promise.reject(error);
       }
 
-      const data: TokenResponse = await response.json();
+      try {
+        const refreshResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/auth/refresh-token`,
+          { refresh_token: refreshToken },
+          { headers: { "Content-Type": "application/json" } }
+        );
 
-      // Save the new tokens
-      this.saveTokens(data.access, data.refresh);
+        const {access_token, refresh_token} = refreshResponse.data;
 
-      return data;
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      // Clear invalid tokens
-      this.clearTokens();
-      throw error;
+        //Save new tokens
+        sessionStorage.setItem("access_token", access_token);
+        sessionStorage.setItem("refresh_token", refresh_token || refreshToken);
+
+        //Retry original request with new token
+        originalRequest.headers.Authorization = `Bearer ${access_token}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+      }
     }
+
+    return Promise.reject(error);
   }
-}
+);
+
+export default api
