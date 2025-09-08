@@ -102,7 +102,7 @@ export default function PhoneAuth() {
                 Enter Your Phone Number
               </h1>
               <p className="text-gray-600 text-[15px] lg:text-lg font-[Inter-Regular]">
-                We'll send you an OTP to verify your number
+                We&apos;ll send you an OTP to verify your number
               </p>
             </div>
 
