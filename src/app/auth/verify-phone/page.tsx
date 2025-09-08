@@ -60,7 +60,7 @@ export default function PhoneAuth() {
         setIsError(false);
 
         sessionStorage.setItem("phone_number", formattedPhone);
-        router.push("/auth/verify-otp");
+        router.push("/user-details");
       } else {
         setMessage(data.error || data.message || "Something went wrong.");
         setIsError(true);
@@ -73,39 +73,43 @@ export default function PhoneAuth() {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex bg-gradient-to-br from-blue-50 via-blue-25 to-white relative">
+    <div className="h-screen w-screen lg:overflow-hidden flex bg-gradient-to-br from-blue-50 via-blue-25 to-white relative">
       <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-auto w-full">
         {/* Left side - Logo and Illustration */}
         <div className="lg:flex-1 flex flex-col items-center justify-center p-8 lg:p-12">
           {/* Logo */}
           <div className="absolute top-8 left-8">
             <div className="flex items-center">
-              <Image src={logo} alt="logo"></Image>
+              <Image
+                src={logo}
+                alt="logo"
+                className="w-24 h-auto sm:w-32 md:w-40 lg:w-[180px]" // adjust per screen size
+              />
             </div>
           </div>
 
           {/* Security Illustration */}
-          <div className="relative mt-16 lg:mt-0">
+          <div className="relative mt-10 lg:mt-4">
             <Image src={lockImg} alt="lockImg"></Image>
           </div>
         </div>
 
         {/* Right side - Form */}
-        <div className="lg:flex-1 flex items-center justify-center p-8 lg:p-12">
+        <div className="lg:flex-1 flex items-center justify-center px-8 lg:p-12">
           <div className="w-full max-w-md">
-            <div className="mb-8">
-              <h1 className="text-4xl lg:text-5xl font-[Inter-Medium] text-gray-900 mb-4 leading-tight">
+            <div className="mb-8 text-center">
+              <h1 className="text-[35px] lg:text-5xl font-[Inter-Medium] text-gray-900 mb-4 leading-tight">
                 Enter Your Phone Number
               </h1>
-              <p className="text-gray-600 text-lg font-[Inter-Regular]">
+              <p className="text-gray-600 text-[15px] lg:text-lg font-[Inter-Regular]">
                 We'll send you an OTP to verify your number
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 mb-20 lg:mb-0 lg:ml-10">
               {/* Country code and phone input */}
               <div className="flex">
-                <div className="flex items-center bg-white border-2 border-gray-200 rounded-xl px-4 py-4 shadow-sm">
+                <div className="flex items-center bg-white border-2 border-gray-200 rounded-lg px-4 py-4 shadow-sm">
                   <span className="text-lg font-medium text-gray-700">
                     +234
                   </span>
@@ -115,8 +119,8 @@ export default function PhoneAuth() {
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="flex-1 px-4 py-4 border-2 border-gray-200 rounded-xl shadow-sm 
-                             focus:outline-none focus:border-blue-500 text-lg bg-white
+                  className="w-full lg:w-[300px] px-4 py-4 border-2 border-gray-200 rounded-lg shadow-sm 
+                             focus:outline-none focus:border-blue-500 text-lg bg-white font-[Inter-Regular]
                              transition-colors duration-200"
                   maxLength={11}
                   onKeyDown={(e) => {
@@ -130,8 +134,8 @@ export default function PhoneAuth() {
               <button
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 
-             text-white py-4 rounded-xl font-semibold text-lg 
+                className="w-full lg:w-[380px] bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 
+             text-white py-4 rounded-lg font-semibold font-[Inter-Regular] 
              transition-all duration-200 shadow-lg hover:shadow-xl
              flex items-center justify-center space-x-2 relative"
               >
