@@ -24,17 +24,17 @@ export default function VerifyDetails() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Save values to sessionStorage
+    // Save values to sessionStorage (just text values and a file name reference)
     sessionStorage.setItem("userName", name);
     sessionStorage.setItem("userDescription", description);
 
     if (profilePic) {
       const reader = new FileReader();
       reader.onload = () => {
-        sessionStorage.setItem("userProfilePic", reader.result as string);
+        sessionStorage.setItem("userProfilePic", reader.result as string); // base64 string
         router.push("/auth/verify-otp");
       };
-      reader.readAsDataURL(profilePic); // store as base64
+      reader.readAsDataURL(profilePic);
     } else {
       router.push("/auth/verify-otp");
     }
@@ -42,15 +42,16 @@ export default function VerifyDetails() {
 
   return (
     <div className="min-h-screen bg-blue-50 flex items-center justify-center">
+      {/* Logo */}
       <div className="absolute top-8 left-[60px]">
-        <div className="flex items-center">
-          <Image
-            src={logo}
-            alt="logo"
-            className="w-24 h-auto sm:w-32 md:w-40 lg:w-[180px]"
-          />
-        </div>
+        <Image
+          src={logo}
+          alt="logo"
+          className="w-24 h-auto sm:w-32 md:w-40 lg:w-[180px]"
+        />
       </div>
+
+      {/* Card */}
       <div className="bg-white rounded-2xl shadow-lg p-8 w-[300px] lg:w-[360px] max-w-md h-auto">
         {/* Profile Picture Upload */}
         <div className="flex flex-col items-center mb-6">
