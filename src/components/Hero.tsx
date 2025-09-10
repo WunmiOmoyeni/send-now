@@ -30,7 +30,7 @@ export default function Hero() {
     <section className="flex flex-col lg:flex-row items-center justify-between px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-24 max-w-[1400px] mx-auto">
       {/* Left Content */}
       <div className="w-full lg:max-w-[670px] lg:text-left font-[Inter-Regular]">
-        <h1 className="text-3xl sm:text-4xl lg:text-[60px] leading-tight font-[Inter-Semibold]">
+        <h1 className="text-3xl sm:text-4xl lg:text-[60px] leading-tight font-medium">
           Introducing{" "}
           <span className="text-[#18B1FF] relative inline-block">
             <span className="invisible">{targetText}</span>
@@ -47,7 +47,7 @@ export default function Hero() {
           communication smooth and intuitive.
         </p>
 
-        <div className="flex flex-row gap-4 mt-10 w-full sm:w-auto max-w-[350px] mx-auto lg:mx-0 items-center justify-center">
+        <div className="flex flex-row font-[Inter-Regular] gap-4 mt-10 w-full sm:w-auto max-w-[350px] mx-auto lg:mx-0 items-center justify-center">
           <button className="w-[300px] flex-1 bg-[#18B1FF] hover:bg-[#0FA0E6] text-white px-8 py-4 rounded-[60px] text-lg transition-colors duration-200">
             Download
           </button>

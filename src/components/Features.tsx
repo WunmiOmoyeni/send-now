@@ -86,10 +86,10 @@ export default function FeaturesSection() {
       {/* Content wrapper */}
       <div className="relative z-10">
         {/* Heading */}
-        <div className="text-center mb-16 font-[Inter-Regular] px-4">
-          <h2 className="text-[28px] sm:text-[40px] lg:text-[70px] font-semibold text-[#171717] leading-tight">
+        <div className="text-center mb-16 font-[Inter-Regular] font-medium px-4">
+          <h2 className="text-[28px] sm:text-[40px] lg:text-[70px]  text-[#171717] leading-tight">
             Packed with Powerful <br />
-            <span className="text-[28px] sm:text-[40px] lg:text-[70px] font-semibold text-[#18B1FF]">
+            <span className="text-[28px] sm:text-[40px] lg:text-[70px] text-[#18B1FF]">
               Features
             </span>
           </h2>

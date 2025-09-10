@@ -12,13 +12,18 @@
 
 @font-face {
   font-family: Inter-Regular;
-  src: url(../fonts/Inter_18pt-Regular.ttf);
+  src: url(../fonts/Helvetica\ Regular.otf);
 }
 
 @font-face {
   font-family: Inter-SemiBold;
-  src: url(../fonts/Inter_18pt-SemiBold.ttf);
+  src: url(../fonts/HelveticaNowDisplay-Bold.ttf);
 }
+
+/* @font-face {
+  font-family: Inter-Black;
+  src: url(../fonts/H);
+} */
 
 @font-face {
   font-family: Inter-Medium;

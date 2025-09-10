@@ -34,6 +34,7 @@ export default function PhoneAuth() {
     }
 
     try {
+      setIsLoading(true);
       const csrfToken = getCookie("csrftoken");
 
       const res = await fetch(
@@ -68,6 +69,8 @@ export default function PhoneAuth() {
       console.error("Network error:", error);
       setMessage("Network error. Please try again later.");
       setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,7 +100,7 @@ export default function PhoneAuth() {
         <div className="lg:flex-1 flex items-center justify-center px-8 lg:p-12">
           <div className="w-full max-w-md">
             <div className="mb-8 text-center">
-              <h1 className="text-[35px] lg:text-5xl font-[Inter-Medium] text-gray-900 mb-4 leading-tight">
+              <h1 className="text-[35px] lg:text-5xl font-[Inter-Regular] text-gray-900 mb-4 leading-tight">
                 Enter Your Phone Number
               </h1>
               <p className="text-gray-600 text-[15px] lg:text-lg font-[Inter-Regular]">
@@ -122,6 +125,7 @@ export default function PhoneAuth() {
                              focus:outline-none focus:border-blue-500 text-lg bg-white font-[Inter-Regular]
                              transition-colors duration-200"
                   maxLength={11}
+                  disabled={isLoading}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       handleSubmit(e);

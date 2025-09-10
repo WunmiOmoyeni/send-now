@@ -32,10 +32,14 @@ export default function VerifyOtp() {
   const phone_number =
     typeof window != "undefined" ? sessionStorage.getItem("phone_number") : "";
 
+  const maskedPhone =
+    phone_number?.slice(0, 4) + "****" + phone_number?.slice(-3) || "";
+
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccessMessage("");
 
     try {
       const csrfToken = getCookie("csrftoken");
@@ -64,45 +68,23 @@ export default function VerifyOtp() {
       if (!verifyData.tokens) {
         throw new Error("No tokens received. Try again.");
       }
-   
+
       const refreshToken = verifyData.tokens.refresh_token;
       const accessToken = verifyData.tokens.access_token;
 
-      if (!refreshToken) {
-        throw new Error("No refresh token received. Please try again");
+      if (!refreshToken || !accessToken) {
+        throw new Error("Tokens missing. Please try again");
       }
 
-      //Immediately call refresh-token APi
-      const refreshResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/auth/refresh-token`,
-        {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            "Content-Type": "application/json",
-            "X-CSRFtoken": csrfToken || "",
-          },
-          body: JSON.stringify({
-            refresh_token: refreshToken,
-          }),
-        }
-      );
+      //Save tokens immediately
+      sessionStorage.setItem("access_token", accessToken);
+      sessionStorage.setItem("refresh_token", refreshToken);
 
-      if (!refreshResponse.ok) {
-        throw new Error("Failed to fetch access token. Please try again.");
-      }
+      setSuccessMessage("OTP verified successfully");
 
-      const refreshData = await refreshResponse.json();
-      console.log(refreshData)
+      router.push("/chat-page")
 
-      //Save tokens
-      sessionStorage.setItem("access_token", refreshData.access_token);
-      sessionStorage.setItem(
-        "refresh_token",
-        refreshData.refresh_token || refreshToken
-      );
-
-      router.push("/chat-page");
+   
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occured");
     } finally {
@@ -196,12 +178,12 @@ export default function VerifyOtp() {
 
         {/* Verification Form */}
         <div className="max-w-md w-full p-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Verify OTP</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-[50px] font-medium font-[Inter-Regular] text-gray-900 mb-4">Verify OTP</h2>
+          <p className="text-gray-600 mb-6 font-[Inter-Regular]">
             A 6-digit code was sent to{" "}
-            <span className="font-medium">+234 80xx xxxx xx</span>
+            <span className="font-medium">{maskedPhone}</span>
           </p>
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-500 mb-6 font-[Inter-Regular]">
             Didn&apos;t get it?{" "}
             <button
               onClick={handleResendOtp}
@@ -214,6 +196,7 @@ export default function VerifyOtp() {
             {successMessage && (
               <p className="mt-2 text-sm text-green-500">{successMessage}</p>
             )}
+             {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
           </p>
 
           <form onSubmit={handleVerifyOtp} className="space-y-6">
@@ -240,7 +223,7 @@ export default function VerifyOtp() {
             <button
               type="submit"
               disabled={loading || code.some((digit) => !digit)}
-              className="w-[300px] bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              className="w-[300px] bg-blue-500 hover:bg-blue-600 font-[Inter-Regular] text-white py-3 rounded-xl font-semibold text-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               {loading ? "Verifying..." : "Verify"}
             </button>
