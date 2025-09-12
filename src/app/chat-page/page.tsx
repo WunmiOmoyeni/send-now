@@ -204,7 +204,7 @@ export default function ChatPage() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh]">
+          <div className="flex-1 flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] max-w-screen">
             <div className="flex items-center justify-center w-56 mb-6">
               <Image
                 src={Logo}
