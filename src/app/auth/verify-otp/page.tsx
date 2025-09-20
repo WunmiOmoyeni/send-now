@@ -79,41 +79,10 @@ export default function VerifyOtp() {
       //Save tokens immediately
       sessionStorage.setItem("access_token", accessToken);
       sessionStorage.setItem("refresh_token", refreshToken);
-
-      const name = sessionStorage.getItem("userName");
-      const description = sessionStorage.getItem("userDescription");
-      const profilePicture = sessionStorage.getItem('userProfilePic');
-
-      const formData = new FormData();
-      if (name) formData.append("name", name);
-      if (description) formData. append("description", description);
-
-      if (profilePicture) {
-        const response = await fetch(profilePicture);
-        const blob = await response.blob();
-        const file = new File([blob], "profile.jpg", {type: blob.type});
-        formData.append("profile_picture", file);
-      }
-
-      //Send PATCH request
-      const profileRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: formData,
-        }
-      );
-
-      if (!profileRes.ok) {
-        throw new Error("Profile update failed");
-      }
  
-
       setSuccessMessage("OTP verified successfully");
 
-      router.push("/chat-page")
+      router.push("/user-details")
 
    
     } catch (error) {

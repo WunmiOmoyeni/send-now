@@ -60,7 +60,7 @@ export default function PhoneAuth() {
         setIsError(false);
 
         sessionStorage.setItem("phone_number", formattedPhone);
-        router.push("/user-details");
+        router.push("/auth/verify-otp");
       } else {
         setMessage(data.error || data.message || "Something went wrong.");
         setIsError(true);

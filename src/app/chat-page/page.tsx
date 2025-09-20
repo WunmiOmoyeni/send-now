@@ -5,24 +5,44 @@ import Image from "next/image";
 import Logo from "../../images/logo.svg";
 
 export default function ChatPage() {
-  const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [profile, setProfile] = useState<{
+    name: string;
+    picture: string;
+  } | null>(null);
 
   useEffect(() => {
-    const pic = sessionStorage.getItem("userProfilePic");
-    if (pic) {
-      setProfilePic(pic);
-    }
+    const fetchProfile = async () => {
+      const accessToken = sessionStorage.getItem("access_token");
+      if (!accessToken) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setProfile({
+          name: data.name,
+          picture: data.profile_picture
+            ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${data.profile_picture}`
+            : "",
+        });
+      }
+    };
+
+    fetchProfile();
   }, []);
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 font-[Inter-Regular]">
       <div className="w-full flex justify-center py-4">
         <div className="w-full max-w-7xl px-6">
-          <Image
-            src={Logo}
-            alt="logo"
-            className="w-56 h-10 object-contain"
-          />
+          <Image src={Logo} alt="logo" className="w-56 h-10 object-contain" />
         </div>
       </div>
 
@@ -129,7 +149,7 @@ export default function ChatPage() {
 
             <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 mt-2">
               <img
-                src={profilePic || "/default-user.png"} // fallback if no pic
+                src={profile?.picture || "/default-user.png"} // fallback if no pic
                 alt="User"
                 className="w-full h-full object-cover"
               />
@@ -204,7 +224,7 @@ export default function ChatPage() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] max-w-screen">
+          <div className="flex-1 flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] max-w-[80vw]">
             <div className="flex items-center justify-center w-56 mb-6">
               <Image
                 src={Logo}

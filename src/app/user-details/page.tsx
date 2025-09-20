@@ -11,6 +11,10 @@ export default function VerifyDetails() {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState("");
+
   const router = useRouter();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,22 +25,46 @@ export default function VerifyDetails() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccessMessage("");
 
-    // Save values to sessionStorage (just text values and a file name reference)
-    sessionStorage.setItem("userName", name);
-    sessionStorage.setItem("userDescription", description);
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("description", description);
+      if (profilePic) {
+        formData.append("profilePic", profilePic);
+      }
 
-    if (profilePic) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        sessionStorage.setItem("userProfilePic", reader.result as string); // base64 string
-        router.push("/auth/verify-otp");
-      };
-      reader.readAsDataURL(profilePic);
-    } else {
-      router.push("/auth/verify-otp");
+      const accessToken = sessionStorage.getItem("access_token"); // or however you're storing it
+      if (!accessToken) {
+        throw new Error("No access token found. Please log in again.");
+      }
+
+      const profileRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!profileRes.ok) {
+        throw new Error("Profile update failed");
+      }
+
+      setSuccessMessage("Profile updated successfully ✅");
+      router.push("/chat-page");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,7 +96,9 @@ export default function VerifyDetails() {
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
+                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 
+                  2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 
+                  5v3h20v-3c0-3.3-6.7-5-10-5z" />
               </svg>
             )}
           </div>
@@ -113,12 +143,23 @@ export default function VerifyDetails() {
             />
           </div>
 
+          {error && (
+            <p className="text-red-500 text-sm font-[Inter-Regular]">{error}</p>
+          )}
+          {successMessage && (
+            <p className="text-green-600 text-sm font-[Inter-Regular]">
+              {successMessage}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="w-full lg:w-[300px] bg-blue-500 hover:bg-blue-600 
-                       text-white py-3 rounded-lg transition-all font-[Inter-Regular]"
+            disabled={loading}
+            className={`w-full lg:w-[300px] ${
+              loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+            } text-white py-3 rounded-lg transition-all font-[Inter-Regular]`}
           >
-            Continue
+            {loading ? "Saving..." : "Continue"}
           </button>
         </form>
       </div>
