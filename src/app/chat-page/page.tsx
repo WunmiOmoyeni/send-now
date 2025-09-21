@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
+  GroupIcon,
   Filter,
   Search,
   Plus,
@@ -30,10 +31,9 @@ export default function ChatPage() {
     localStorage.setItem("showNewChat", String(showNewChat));
   }, [showNewChat]);
 
-
   return (
     <div className="flex flex-col h-screen bg-gray-50 font-[Inter-Regular]">
-      <div className="w-full hidden justify-center py-4 md:block">
+      <div className="w-full hidden justify-center pt-4 md:block">
         <div className="w-full max-w-7xl px-6">
           <Image src={Logo} alt="logo" className="w-56 h-10 object-contain" />
         </div>
@@ -46,38 +46,54 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/*Mobile Chats Reader*/}
-      <div className="md:hidden bg-white px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Chats</h2>
-          <Filter className="w-5 h-5 text-gray-500" />
+      {/*Mobile View */}
+      {showNewChat ? (
+        //Fullscreen NewChat
+        <div className="md:hidden flex-1 bg-white h-full">
+          <NewChat />
         </div>
-
-        {/*Mobile Search Bar*/}
-        <div className="relative border border-blue-400 rounded-lg">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-black" />
-          <input
-            type="text"
-            placeholder="Search or Start a new chat"
-            className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      </div>
-
-      {/*Mobile Start New Chat Button */}
-      <div className="md:hidden pb-4 bg-white">
-        <button className="flex items-center space-x-3 p-4 rounded-xl w-full hover:bg-gray-50 transition-colors bg-gray-50">
-          <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center">
-            <Plus className="w-6 h-6 text-white" />
-          </div>
-          <div className="text-left">
-            <div className="font-medium text-gray-900 text-base">
-              Start a new chat
+      ) : (
+        <>
+          {/*Mobile Chats Reader*/}
+          <div className="md:hidden bg-white px-4 py-4">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-gray-900">Chats</h2>
+              <Filter className="w-5 h-5 text-gray-500" />
             </div>
-            <div className="text-sm text-gray-500">With Family or Friend</div>
+
+            {/*Mobile Search Bar*/}
+            <div className="relative border border-blue-400 rounded-lg">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-black" />
+              <input
+                type="text"
+                placeholder="Search or Start a new chat"
+                className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
-        </button>
-      </div>
+
+          {/*Mobile Start New Chat Button */}
+          <div className="md:hidden pb-4 bg-white">
+            <button
+              onClick={() => setShowNewChat(true)}
+              className="flex items-center space-x-3 p-4 rounded-xl w-full hover:bg-gray-50 transition-colors bg-gray-50"
+            >
+              <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center">
+                <Plus className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-medium text-gray-900 text-base">
+                  Start a new chat
+                </div>
+                <div className="text-sm text-gray-500">
+                  With Family or Friend
+                </div>
+              </div>
+            </button>
+          </div>
+        </>
+      )};
+    
 
       {/*Main Layout */}
       <div className="hidden md:flex flex-1 justify-center ">
@@ -264,7 +280,7 @@ export default function ChatPage() {
             {showNewChat ? (
               <NewChat />
             ) : (
-              <div className="flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] w-[600px]">
+              <div className="flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] max-w-[70vw]">
                 {" "}
                 <div className="flex items-center justify-center w-56 mb-6">
                   {" "}
