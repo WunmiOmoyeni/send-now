@@ -2,55 +2,88 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import {
+  Filter,
+  Search,
+  Plus,
+  MessageSquare,
+  Phone,
+  Settings,
+} from "lucide-react";
 import Logo from "../../images/logo.svg";
+import NewChat from "../newchats/page";
 
 export default function ChatPage() {
-  const [profile, setProfile] = useState<{
-    name: string;
-    picture: string;
-  } | null>(null);
+  const profileName = sessionStorage.getItem("name");
+  const profileDescription = sessionStorage.getItem("description");
+  const profilePic = sessionStorage.getItem("profilePic");
+  const [showNewChat, setShowNewChat] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const accessToken = sessionStorage.getItem("access_token");
-      if (!accessToken) return;
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      if (res.ok) {
-        const data = await res.json();
-        setProfile({
-          name: data.name,
-          picture: data.profile_picture
-            ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${data.profile_picture}`
-            : "",
-        });
-      }
-    };
-
-    fetchProfile();
+    const saved = localStorage.getItem("showNewChat");
+    if (saved === "true") {
+      setShowNewChat(true);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("showNewChat", String(showNewChat));
+  }, [showNewChat]);
+
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 font-[Inter-Regular]">
-      <div className="w-full flex justify-center py-4">
+      <div className="w-full hidden justify-center py-4 md:block">
         <div className="w-full max-w-7xl px-6">
           <Image src={Logo} alt="logo" className="w-56 h-10 object-contain" />
         </div>
       </div>
 
+      {/*Mobile Header*/}
+      <div className="md:hidden bg-white py-2 border-b border-gray-100 ">
+        <div className="flex items-center">
+          <Image src={Logo} alt="logo" className="w-32 h-7 object-contain" />
+        </div>
+      </div>
+
+      {/*Mobile Chats Reader*/}
+      <div className="md:hidden bg-white px-4 py-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-gray-900">Chats</h2>
+          <Filter className="w-5 h-5 text-gray-500" />
+        </div>
+
+        {/*Mobile Search Bar*/}
+        <div className="relative border border-blue-400 rounded-lg">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-black" />
+          <input
+            type="text"
+            placeholder="Search or Start a new chat"
+            className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
+      {/*Mobile Start New Chat Button */}
+      <div className="md:hidden pb-4 bg-white">
+        <button className="flex items-center space-x-3 p-4 rounded-xl w-full hover:bg-gray-50 transition-colors bg-gray-50">
+          <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center">
+            <Plus className="w-6 h-6 text-white" />
+          </div>
+          <div className="text-left">
+            <div className="font-medium text-gray-900 text-base">
+              Start a new chat
+            </div>
+            <div className="text-sm text-gray-500">With Family or Friend</div>
+          </div>
+        </button>
+      </div>
+
       {/*Main Layout */}
-      <div className="flex flex-1 justify-center ">
+      <div className="hidden md:flex flex-1 justify-center ">
         <div className="w-full  flex">
           {/* Sidebar */}
-          <div className="w-16 flex flex-col items-center py-4 space-y-4 h-[80vh] mr-5">
+          <div className="w-16 flex flex-col items-center py-4 space-y-4 h-[80vh] mr-3">
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <div className="w-5 h-5 flex items-center justify-center">
                 <svg
@@ -149,7 +182,7 @@ export default function ChatPage() {
 
             <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 mt-2">
               <img
-                src={profile?.picture || "/default-user.png"} // fallback if no pic
+                src={profilePic || "/default-user.png"} // fallback if no pic
                 alt="User"
                 className="w-full h-full object-cover"
               />
@@ -197,7 +230,10 @@ export default function ChatPage() {
             </div>
 
             <div className="px-4 pb-4">
-              <button className="flex items-center space-x-3 p-3 rounded-lg w-full hover:bg-gray-50 transition-colors">
+              <button
+                onClick={() => setShowNewChat(true)}
+                className="flex items-center space-x-3 p-3 rounded-lg w-full hover:bg-gray-50 transition-colors"
+              >
                 <div className="w-10 h-10 bg-[#18B1FF] rounded-full flex items-center justify-center">
                   <svg
                     width="20"
@@ -224,20 +260,68 @@ export default function ChatPage() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] max-w-[80vw]">
-            <div className="flex items-center justify-center w-56 mb-6">
-              <Image
-                src={Logo}
-                alt="SendNow Logo"
-                className="w-full h-full object-contain"
+          <div className="flex-1">
+            {showNewChat ? (
+              <NewChat />
+            ) : (
+              <div className="flex flex-col items-center justify-center border border-[#18B1FF4D] rounded-xl bg-white h-[80vh] w-[600px]">
+                {" "}
+                <div className="flex items-center justify-center w-56 mb-6">
+                  {" "}
+                  <Image
+                    src={Logo}
+                    alt="SendNow Logo"
+                    className="w-full h-full object-contain"
+                  />{" "}
+                </div>{" "}
+                <p className="text-gray-500 text-center max-w-sm text-sm leading-relaxed">
+                  {" "}
+                  Real-time conversations, media sharing, and smart features to
+                  keep communication smooth and intuitive.{" "}
+                </p>{" "}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/*Mobile Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-white border-t border-gray-100 px-4 py-2 safe-area-inset-bottom">
+        <div className="flex items-center justify-around">
+          {/* Chat - Active */}
+          <button className="flex flex-col items-center py-2 px-3">
+            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mb-1">
+              <MessageSquare className="w-5 h-5 text-gray-800" />
+            </div>
+          </button>
+
+          {/* Calls */}
+          <button className="flex flex-col items-center py-2 px-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1">
+              <Phone className="w-5 h-5 text-gray-400" />
+            </div>
+          </button>
+
+          {/* Settings */}
+          <button className="flex flex-col items-center py-2 px-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center mb-1">
+              <Settings className="w-5 h-5 text-gray-400" />
+            </div>
+          </button>
+
+          {/* Profile */}
+          <button className="flex flex-col items-center py-2 px-3">
+            <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-gray-200 mb-1">
+              <img
+                src={profilePic || "/default-user.png"}
+                alt={profileName || "Profile"}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "/default-user.png";
+                }}
               />
             </div>
-
-            <p className="text-gray-500 text-center max-w-sm text-sm leading-relaxed">
-              Real-time conversations, media sharing, and smart features to keep
-              communication smooth and intuitive.
-            </p>
-          </div>
+          </button>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../images/logo.svg";
+import { profile } from "console";
 
 export default function VerifyDetails() {
   const [name, setName] = useState("");
@@ -37,6 +38,17 @@ export default function VerifyDetails() {
       formData.append("description", description);
       if (profilePic) {
         formData.append("profilePic", profilePic);
+      }
+
+      sessionStorage.setItem("name", name);
+      sessionStorage.setItem("description", description);
+
+      if (profilePic) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          sessionStorage.setItem("profilePic", reader.result as string);
+        };
+        reader.readAsDataURL(profilePic);
       }
 
       const accessToken = sessionStorage.getItem("access_token"); // or however you're storing it
