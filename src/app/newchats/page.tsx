@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { LucideGroup, Plus } from "lucide-react";
 import Image from "next/image";
+import NewContactModal from "@/modals/newContact";
 
 type Contact = {
   id: string;
@@ -14,6 +15,7 @@ export default function NewChat() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -49,22 +51,31 @@ export default function NewChat() {
 
   return (
     <div className="flex flex-col lg:border lg:border-[#18B1FF4D] rounded-xl bg-white h-[80vh]  p-4 sm:p-5 w-full max-w-md md:max-w-[50vw] lg:max-w-[70vw]">
-      <h2 className="text-lg sm:text-xl font-semibold text-center mb-4">New Chats</h2>
+      <h2 className="text-lg sm:text-xl font-semibold text-center mb-4">
+        New Chats
+      </h2>
 
       {/* Buttons */}
       <div className="space-y-2 mb-6 ">
         <button className="flex items-center space-x-3 p-3 rounded-lg w-full hover:bg-gray-50 transition-colors bg-[#18B1FF0D]">
           <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#18B1FF] rounded-full flex items-center justify-center text-white text-base sm:text-lg">
-            <LucideGroup/>
+            <LucideGroup />
           </div>
-          <span className="font-[Inter-Regular] text-gray-900 text-sm sm:text-base">New group</span>
+          <span className="font-[Inter-Regular] text-gray-900 text-sm sm:text-base">
+            New group
+          </span>
         </button>
 
-        <button className="flex items-center space-x-3 p-3 rounded-lg w-full hover:bg-gray-50 transition-colors bg-[#18B1FF0D]">
+        <button
+          onClick={() => setOpenModal(true)}
+          className="flex items-center space-x-3 p-3 rounded-lg w-full hover:bg-gray-50 transition-colors bg-[#18B1FF0D]"
+        >
           <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#18B1FF] rounded-full flex items-center justify-center text-white text-base sm:text-lg">
-            <Plus/>
+            <Plus />
           </div>
-          <span className="font-medium text-gray-900 text-sm sm:text-base">New Contact</span>
+          <span className="font-medium text-gray-900 text-sm sm:text-base">
+            New Contact
+          </span>
         </button>
       </div>
 
@@ -103,6 +114,8 @@ export default function NewChat() {
           ))
         )}
       </div>
+
+      <NewContactModal open= {openModal} onClose={() => setOpenModal(false)}/>
     </div>
   );
 }
