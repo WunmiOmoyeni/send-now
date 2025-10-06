@@ -13,12 +13,24 @@ import {
 } from "lucide-react";
 import Logo from "../../images/logo.svg";
 import NewChat from "../newchats/page";
+import NewContactModal from "@/modals/newContact";
 
 export default function ChatPage() {
-  const profileName = sessionStorage.getItem("name");
-  const profileDescription = sessionStorage.getItem("description");
-  const profilePic = sessionStorage.getItem("profilePic");
+  const [profileName, setProfileName] = useState<string | null>(null);
+  const [profileDescription, setProfileDescription] = useState<string | null>(null);
+  const [profilePic, setProfilePic] = useState<string | null>(null);
   const [showNewChat, setShowNewChat] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+   useEffect(() => {
+    const name = sessionStorage.getItem("name");
+    const description = sessionStorage.getItem("description");
+    const pic = sessionStorage.getItem("profilePic");
+
+    setProfileName(name);
+    setProfileDescription(description);
+    setProfilePic(pic);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("showNewChat");
@@ -49,7 +61,7 @@ export default function ChatPage() {
       {/*Mobile View */}
       {showNewChat ? (
         //Fullscreen NewChat
-        <div className="md:hidden flex-1 bg-white h-full">
+        <div className="md:hidden bg-white h-full">
           <NewChat />
         </div>
       ) : (
@@ -75,7 +87,7 @@ export default function ChatPage() {
           {/*Mobile Start New Chat Button */}
           <div className="md:hidden pb-4 bg-white">
             <button
-              onClick={() => setShowNewChat(true)}
+              onClick={() => setOpenModal(true)}
               className="flex items-center space-x-3 p-4 rounded-xl w-full hover:bg-gray-50 transition-colors bg-gray-50"
             >
               <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center">
@@ -91,6 +103,8 @@ export default function ChatPage() {
               </div>
             </button>
           </div>
+
+          
         </>
       )};
     
@@ -338,6 +352,8 @@ export default function ChatPage() {
               />
             </div>
           </button>
+
+          <NewContactModal open={openModal} onClose={() => setOpenModal(false)}/>
         </div>
       </div>
     </div>

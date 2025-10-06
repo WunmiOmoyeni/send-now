@@ -7,7 +7,11 @@ import NewContactModal from "@/modals/newContact";
 
 type Contact = {
   id: string;
-  contact: string;
+  contact: {
+    id: string;
+    name: string;
+    phone_number: string;
+  };
   contact_id: string;
 };
 
@@ -107,8 +111,8 @@ export default function NewChat() {
 
               {/* Contact Info */}
               <div className="flex flex-col">
-                <p className="font-medium text-gray-900">{contact.contact}</p>
-                <p className="text-xs text-gray-500">{contact.contact_id}</p>
+                <p className="font-medium text-gray-900">{contact.contact?.name}</p>
+                <p className="text-xs text-gray-500">{contact.contact?.phone_number}</p>
               </div>
             </div>
           ))
